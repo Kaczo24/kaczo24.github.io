@@ -56,17 +56,17 @@ function Draw() {
 
     cx.fillStyle = "#f00";
 
-    cx.circleFill(WorldToScreenPos(new Vector(00, 00)), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(00, 50)), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(0, -50)), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(50, 00)), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(-50, 0)), 5);
+    cx.circleFill(WorldToScreenPos(new Vector(00, 00)), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(00, 50)), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(0, -50)), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(50, 00)), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(-50, 0)), 5 * zoom);
 
-    cx.circleFill(WorldToScreenPos(new Vector(00, 00).add(new Vector(300, 0))), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(00, 50).add(new Vector(300, 0))), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(0, -50).add(new Vector(300, 0))), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(50, 00).add(new Vector(300, 0))), 5);
-    cx.circleFill(WorldToScreenPos(new Vector(-50, 0).add(new Vector(300, 0))), 5);
+    cx.circleFill(WorldToScreenPos(new Vector(00, 00).add(new Vector(300, 0))), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(00, 50).add(new Vector(300, 0))), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(0, -50).add(new Vector(300, 0))), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(50, 00).add(new Vector(300, 0))), 5 * zoom);
+    cx.circleFill(WorldToScreenPos(new Vector(-50, 0).add(new Vector(300, 0))), 5 * zoom);
 }
 
 function Move() {
@@ -89,8 +89,7 @@ function TrackPos(e) {
     mousePos.x = e.offsetX;
     mousePos.y = e.offsetY;
     if(isDraged) {
-        console.log(e.movementX, e.movementY)
-        pos = pos.add(ScreenToWorldPos(new Vector(e.movementX, e.movementY)))
+        pos = pos.add(new Vector(-e.movementX, e.movementY).div(zoom))
     }
 }
 

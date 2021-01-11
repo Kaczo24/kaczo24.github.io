@@ -147,6 +147,9 @@ class Vector {
     div(a) {
         return new Vector(this.x / a, this.y / a);
     }
+    copy() {
+        return new Vector(this.x, this.y, this.z);
+    }
 
 }
 
