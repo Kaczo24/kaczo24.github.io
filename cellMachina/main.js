@@ -4,22 +4,26 @@ let cx = canvas.getContext("2d");
 let constLog = document.getElementById("constLog");
 
 const width = canvas.width, height = canvas.height, center = new Vector(width/2, height/2);
+const cellSize = 50;
+
 let pos = new Vector();
 let zoom = 1;
 let mousePos = new Vector();
 let isDraged = false;
 
 
-
-
 gameloop.INIT(Setup, Update);
 gameloop.Start();
-
 function Setup() {
-    canvas.onmousewheel = Scroll;
-    canvas.onmousedown = OnClickS;
-    canvas.onmouseup = OnClickE;
+    window.onmousewheel = Scroll;
+    window.onmousedown = OnClickS;
+    window.onmouseup = OnClickE;
     canvas.onmousemove = TrackPos;
+
+    if(settings.darkmode) {
+        document.body.bgColor = "#3f3f47";
+        document.body.style.color = "white";
+    }
 }
 
 function Update() {
@@ -31,11 +35,16 @@ function Update() {
 }
 
 function Draw() {
-    cx.backgroundFill("#fff");
-    cx.strokeStyle = "#000"; 
+    if(settings.darkmode) {
+        cx.backgroundFill("#3f3f47");
+        cx.strokeStyle = "#65656f"; 
+
+    } else {
+        cx.backgroundFill("#fff");
+        cx.strokeStyle = "#000"; 
+    }
+    
     cx.lineWidth = zoom;
-    cx.fillStyle = "#bbb";
-    let cellSize = 50;
     let cellSizeZ = cellSize * zoom;
     let nCells = new Vector(Math.ceil(width / cellSizeZ ) + 2, Math.ceil(height / cellSizeZ) + 2);
 
@@ -54,36 +63,27 @@ function Draw() {
         }
     }
 
-    cx.fillStyle = "#f00";
-
-    cx.circleFill(WorldToScreenPos(new Vector(00, 00)), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(00, 50)), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(0, -50)), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(50, 00)), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(-50, 0)), 5 * zoom);
-
-    cx.circleFill(WorldToScreenPos(new Vector(00, 00).add(new Vector(300, 0))), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(00, 50).add(new Vector(300, 0))), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(0, -50).add(new Vector(300, 0))), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(50, 00).add(new Vector(300, 0))), 5 * zoom);
-    cx.circleFill(WorldToScreenPos(new Vector(-50, 0).add(new Vector(300, 0))), 5 * zoom);
+    //cx.fillStyle = "#f00";
+    //cx.circleFill(WorldToScreenPos(new Vector(00, 00)), 5 * zoom);
+    //cx.circleFill(WorldToScreenPos(new Vector(00, 50)), 5 * zoom);
+    //cx.circleFill(WorldToScreenPos(new Vector(0, -50)), 5 * zoom);
+    //cx.circleFill(WorldToScreenPos(new Vector(50, 00)), 5 * zoom);
+    //cx.circleFill(WorldToScreenPos(new Vector(-50, 0)), 5 * zoom);
 }
 
 function Move() {
     let speed = 7 / zoom;
-    if(keyPressed["shift"])
+    if(keyPressed[settings.keybinds.speedBoost])
         speed *= 3;
-    if(keyPressed["w"])
+    if(keyPressed[settings.keybinds.forward])
         pos.y += speed;
-    if(keyPressed["a"])
+    if(keyPressed[settings.keybinds.left])
         pos.x -= speed;
-    if(keyPressed["s"])
+    if(keyPressed[settings.keybinds.backward])
         pos.y -= speed;
-    if(keyPressed["d"])
+    if(keyPressed[settings.keybinds.right])
         pos.x += speed;
-
 }
-
 
 function TrackPos(e) {
     mousePos.x = e.offsetX;
@@ -109,18 +109,16 @@ function Scroll(e) {
 
 function OnClickS(e)
 {
-    console.log(e.button);
-    if(e.button == 2) {
+    if(e.button == settings.keybinds.drag) 
         isDraged = true;
-    }
+    
 }
 
 function OnClickE(e)
 {
-    console.log(e.button);
-    if(e.button == 2) {
+    if(e.button == settings.keybinds.drag) 
         isDraged = false;
-    }
+    
 }
 
 function WorldToScreenPos(_pos) {
