@@ -1,47 +1,86 @@
 let gameloop = (() => {
     
-    function start() {
-        gameloop.setup();
-        window.requestAnimationFrame(loop);
+    function Start() {
+        gameloop.Setup();
+        window.requestAnimationFrame(Loop);
     }
 
-    function loop(timestamp) {
-        gameloop.update();
+    function Loop(timestamp) {
+        gameloop.Update();
         let wait = (1000 / gameloop.framerate) - (performance.now() - timestamp);
         if(wait > 0)
-            setTimeout(() => window.requestAnimationFrame(loop), wait)
+            setTimeout(() => window.requestAnimationFrame(Loop), wait)
         else
-            window.requestAnimationFrame(loop)
+            window.requestAnimationFrame(Loop)
       }
 
 
     return {
-        "setup": null,
-        "update": null,
+        "Setup": null,
+        "Update": null,
         "framerate": null,
-        "init": ((setup, update, framerate = 30) => {
-            gameloop.setup = setup;
-            gameloop.update = update;
+        "INIT": ((setup, update, framerate = 30) => {
+            gameloop.Setup = setup;
+            gameloop.Update = update;
             gameloop.framerate = framerate;
         }),
-        "start": (() => {
-            if(gameloop.setup && gameloop.update && gameloop.framerate)
-                start();
+        "Start": (() => {
+            if(gameloop.Setup && gameloop.Update && gameloop.framerate)
+                Start();
         })
     };
 })();
 
+// drawing --------------------------------------------------------------------------------------------------------------
+
 CanvasRenderingContext2D.prototype.line = function(x1, y1, x2, y2) {
-    this.moveTo(x1,y2);
-    this.lineTo(x2,y2);
+    if(x1 instanceof Vector && y1 instanceof Vector) {
+        this.moveTo(x1.x, x1.y);
+        this.lineTo(y1.x, y1.y);
+    } else {
+        this.moveTo(x1, y1);
+        this.lineTo(x2, y2);
+    }
     this.stroke();
  }
 
+ CanvasRenderingContext2D.prototype.backgroundFill = function(c) {
+    let b = this.fillStyle;
+    this.fillStyle = c;
+    this.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.fillStyle = b;
+ }
+
 CanvasRenderingContext2D.prototype.circle = function(x, y, r) {
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, 2 * Math.PI);
-    ctx.stroke();
+    this.beginPath();
+    if(x instanceof Vector)
+        this.arc(x.x, x.y, y, 0, 2 * Math.PI);
+    else
+        this.arc(x, y, r, 0, 2 * Math.PI);
+    this.stroke();
 }
+CanvasRenderingContext2D.prototype.circleFill = function(x, y, r) {
+    this.beginPath();
+    if(x instanceof Vector)
+        this.arc(x.x, x.y, y, 0, 2 * Math.PI);
+    else
+        this.arc(x, y, r, 0, 2 * Math.PI);
+    this.fill();
+}
+
+// keys --------------------------------------------------------------------------------------------------------------
+let keyPressed = {};
+function dLib_keydown(event) {
+    keyPressed[event.key.toLowerCase()] = true;
+    //console.log("starts " + event.key);
+ }
+ function dLib_keyup(event) {
+    keyPressed[event.key.toLowerCase()] = false;
+    //console.log("ends " + event.key);
+ }
+ 
+ window.addEventListener("keydown", dLib_keydown, false)
+ window.addEventListener("keyup", dLib_keyup, false)
 
 // utility classes --------------------------------------------------------------------------------------------------------------
 /*class Color {
@@ -81,5 +120,34 @@ CanvasRenderingContext2D.prototype.circle = function(x, y, r) {
     }
  
 }*/
+
+class Vector {
+    x = 0
+    y = 0
+    z = 0
+    constructor(x, y, z) {
+        if(x) 
+            this.x = x;
+        if(y) 
+            this.y = y;
+        if(z) 
+            this.z = z;
+        
+    }
+
+    add(v) {
+        return new Vector(this.x + v.x, this.y + v.y);
+    }
+    sub(v) {
+        return new Vector(this.x - v.x, this.y - v.y);
+    }
+    mult(a) {
+        return new Vector(this.x * a, this.y * a);
+    }
+    div(a) {
+        return new Vector(this.x / a, this.y / a);
+    }
+
+}
 
 console.log("dLib loaded");
