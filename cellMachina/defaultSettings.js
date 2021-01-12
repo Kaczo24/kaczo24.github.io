@@ -6,6 +6,7 @@ const settings = {
         "left": "a",
         "speedBoost": "shift",
 
+        "place": 0,
         "drag": 2
     },
     "darkmode": true

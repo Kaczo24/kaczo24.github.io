@@ -9,7 +9,9 @@ const cellSize = 50;
 let pos = new Vector();
 let zoom = 1;
 let mousePos = new Vector();
-let isDraged = false;
+let isDraged = false, isPlacing = false;
+let cells = {};
+let framecount = 0;
 
 
 gameloop.INIT(Setup, Update);
@@ -30,8 +32,22 @@ function Update() {
     
     Move();
 
+    if(framecount == 0) {
+        for(let cs in cells) {
+            for(let c in cells[cs]) {
+                cells[cs][c].Update();
+            }
+        }
+    }
+
+    if(isPlacing) {
+        let _pos = ScreenToWorldPos(mousePos).div(cellSize).integerateR();
+        SetCell(_pos, new Wall());
+    }
+
     constLog.innerText = `X: ${pos.x}; Y: ${pos.y}; Zoom: ${zoom}\nmouseX: ${mousePos.x}, mouseY: ${mousePos.y}`
     Draw();
+    framecount = (framecount + 1) % gameloop.framerate;
 }
 
 function Draw() {
@@ -63,12 +79,14 @@ function Draw() {
         }
     }
 
-    //cx.fillStyle = "#f00";
-    //cx.circleFill(WorldToScreenPos(new Vector(00, 00)), 5 * zoom);
-    //cx.circleFill(WorldToScreenPos(new Vector(00, 50)), 5 * zoom);
-    //cx.circleFill(WorldToScreenPos(new Vector(0, -50)), 5 * zoom);
-    //cx.circleFill(WorldToScreenPos(new Vector(50, 00)), 5 * zoom);
-    //cx.circleFill(WorldToScreenPos(new Vector(-50, 0)), 5 * zoom);
+    for(let cs in cells) {
+        for(let c in cells[cs]) {
+            cells[cs][c].Draw();
+        }
+    }
+
+    cx.fillStyle = "red";
+    cx.circleFill(WorldToScreenPos(new Vector()), 5 * zoom);
 }
 
 function Move() {
@@ -112,12 +130,18 @@ function OnClickS(e)
     if(e.button == settings.keybinds.drag) 
         isDraged = true;
     
+    if(e.button == settings.keybinds.place) 
+        isPlacing = true;
+    
 }
 
 function OnClickE(e)
 {
     if(e.button == settings.keybinds.drag) 
         isDraged = false;
+
+    if(e.button == settings.keybinds.place) 
+        isPlacing = false;
     
 }
 
@@ -132,4 +156,25 @@ function ScreenToWorldPos(_pos) {
     let newX = _pos.x + pos.x - center.x;
     let newY = center.y + pos.y - _pos.y;
     return new Vector(newX, newY);
+}
+
+function GetCell(_pos) {
+    if(!cells[_pos.x])
+        return undefined;
+    return cells[_pos.x][_pos.y];
+}
+
+function SetCell(_pos, s) {
+    s.pos = _pos.copy();
+    if(!cells[_pos.x]){
+        cells[_pos.x] = {};
+        cells[_pos.x][_pos.y] = s;
+    } else if(!cells[_pos.x][_pos.y]) 
+        cells[_pos.x][_pos.y] = s; 
+}
+
+function DeleteCell(_pos) {
+    try {
+        delete cells[_pos.x][_pos.y];
+    } catch (error) {}      
 }
