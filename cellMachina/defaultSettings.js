@@ -4,10 +4,13 @@ const settings = {
         "backward": "s",
         "right": "d",
         "left": "a",
+        "rotate": "r",
+
         "speedBoost": "shift",
 
         "place": 0,
-        "drag": 2
+        "pick": 1,
+        "delete": 2
     },
     "darkmode": true
 }

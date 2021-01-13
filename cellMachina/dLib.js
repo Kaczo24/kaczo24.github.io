@@ -72,15 +72,22 @@ CanvasRenderingContext2D.prototype.circleFill = function(x, y, r) {
 let keyPressed = {};
 function dLib_keydown(event) {
     keyPressed[event.key.toLowerCase()] = true;
-    //console.log("starts " + event.key);
  }
  function dLib_keyup(event) {
     keyPressed[event.key.toLowerCase()] = false;
-    //console.log("ends " + event.key);
  }
+ function dLib_mousedown(event) {
+    keyPressed[event.button] = true;
+ }
+ function dLib_mouseup(event) {
+    keyPressed[event.button] = false;
+ }
+
  
- window.addEventListener("keydown", dLib_keydown, false)
- window.addEventListener("keyup", dLib_keyup, false)
+ window.onkeydown = dLib_keydown;
+ window.onkeyup = dLib_keyup;
+ window.onmousedown = dLib_mousedown;
+ window.onmouseup = dLib_mouseup;
 
 // utility classes --------------------------------------------------------------------------------------------------------------
 /*class Color {
