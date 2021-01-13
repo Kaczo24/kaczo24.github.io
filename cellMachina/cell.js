@@ -6,7 +6,13 @@ class Cell {
     }
 
     Draw(){}
-    Update(){}
+    Update() {}
+
+    copy() {
+        let c = new this.constructor();
+        c.pos = this.pos.copy();
+        return c;
+    }
 }
 
 class Wall extends Cell {
@@ -39,10 +45,8 @@ class Mover extends Cell {
     }
 
     Update() {
-        console.log("X");
-        if(CheckMovement(this.pos, this.dir, 0)) {
-            MoveCell(this.pos, this.dir)
-        }
+        if(CheckMovement(this.pos, this.dir, 0)) 
+            MoveCell(this.pos, this.dir, true)
     }
 
     Draw() {
@@ -65,6 +69,12 @@ class Mover extends Cell {
         }
 
     }
+
+    copy() {
+        let c = new this.constructor(this.dir.copy());
+        c.pos = this.pos.copy();
+        return c;
+    }
 }
 
 function CheckMovement(_pos, dir, index) {
@@ -78,9 +88,12 @@ function CheckMovement(_pos, dir, index) {
     return CheckMovement(_pos.add(dir), dir, index + 1);
 }
 
-function MoveCell(_pos, dir) {
+function MoveCell(_pos, dir, actor) {
     if(GetCell(_pos.add(dir)))
-        MoveCell(_pos.add(dir), dir);
-    SetCell(_pos.add(dir), GetCell(_pos));
-        DeleteCell(_pos);
+        MoveCell(_pos.add(dir), dir, false);
+    if(actor)
+        SetCell(_pos.add(dir), GetCell(_pos), postCells);
+    else
+        SetCell(_pos.add(dir), GetCell(_pos), cells);
+    DeleteCell(_pos, cells);
 }

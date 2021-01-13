@@ -5,12 +5,13 @@ let constLog = document.getElementById("constLog");
 
 const width = canvas.width, height = canvas.height, center = new Vector(width/2, height/2);
 const cellSize = 50;
+const orderOfUpdates = [Wall, Box, Mover];
 
 let pos = new Vector();
 let zoom = 1;
 let mousePos = new Vector();
 let isDraged = false, isPlacing = false;
-let cells = {};
+let cells = {}, postCells = {};
 let framecount = 0;
 
 
@@ -28,21 +29,37 @@ function Setup() {
     }
 }
 
+function CellUpdate() {
+    
+    let toUpdate = [];
+    for(let type of orderOfUpdates)
+        for(let cs in cells) 
+            for(let c in cells[cs]) 
+                if(cells[cs][c] instanceof type)
+                    toUpdate.push(cells[cs][c]);
+
+    for(let c of toUpdate)
+        c.Update();
+    
+    for(let cs in postCells) 
+        for(let c in postCells[cs]) 
+            SetCell(postCells[cs][c].pos, postCells[cs][c].copy(), cells);
+    
+    //cells = postCells;
+    postCells = {};
+}
+
 function Update() {
     
     Move();
 
     if(framecount == 0) {
-        for(let cs in cells) {
-            for(let c in cells[cs]) {
-                cells[cs][c].Update();
-            }
-        }
+        CellUpdate()
     }
 
     if(isPlacing) {
         let _pos = ScreenToWorldPos(mousePos).div(cellSize).integerateR();
-        SetCell(_pos, new Wall());
+        SetCell(_pos, new Wall(), cells);
     }
 
     constLog.innerText = `X: ${pos.x}; Y: ${pos.y}; Zoom: ${zoom}\nmouseX: ${mousePos.x}, mouseY: ${mousePos.y}`
@@ -159,22 +176,34 @@ function ScreenToWorldPos(_pos) {
 }
 
 function GetCell(_pos) {
-    if(!cells[_pos.x])
-        return undefined;
+    if(!cells[_pos.x]) {
+        if(!postCells[_pos.x])
+            return undefined;
+        if(!postCells[_pos.x][_pos.y])
+            return undefined;
+        return postCells[_pos.x][_pos.y];
+    }
+    if(!cells[_pos.x][_pos.y]) {
+        if(!postCells[_pos.x])
+            return undefined;
+        if(!postCells[_pos.x][_pos.y])
+            return undefined;
+        return postCells[_pos.x][_pos.y];
+    }
     return cells[_pos.x][_pos.y];
 }
 
-function SetCell(_pos, s) {
+function SetCell(_pos, s, grid) {
     s.pos = _pos.copy();
-    if(!cells[_pos.x]){
-        cells[_pos.x] = {};
-        cells[_pos.x][_pos.y] = s;
-    } else if(!cells[_pos.x][_pos.y]) 
-        cells[_pos.x][_pos.y] = s; 
+    if(!grid[_pos.x]){
+        grid[_pos.x] = {};
+        grid[_pos.x][_pos.y] = s;
+    } else if(!grid[_pos.x][_pos.y]) 
+        grid[_pos.x][_pos.y] = s; 
 }
 
-function DeleteCell(_pos) {
+function DeleteCell(_pos, grid) {
     try {
-        delete cells[_pos.x][_pos.y];
+        delete grid[_pos.x][_pos.y];
     } catch (error) {}      
 }
