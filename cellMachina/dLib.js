@@ -69,9 +69,11 @@ CanvasRenderingContext2D.prototype.circleFill = function(x, y, r) {
 }
 
 // keys --------------------------------------------------------------------------------------------------------------
-let keyPressed = {};
+let keyPressed = {}, keyDownFunction = {};
 function dLib_keydown(event) {
     keyPressed[event.key.toLowerCase()] = true;
+    if(keyDownFunction[event.key.toLowerCase()])
+        keyDownFunction[event.key.toLowerCase()]();
  }
  function dLib_keyup(event) {
     keyPressed[event.key.toLowerCase()] = false;
@@ -162,6 +164,11 @@ class Vector {
     integerateR() {
         return new Vector(Math.round(this.x), Math.round(this.y));
     }
+
+    rotate(a) {
+        return new Vector(this.x * Math.cos(a) - this.y * Math.sin(a), this.x * Math.sin(a) + this.y * Math.cos(a)).integerateR();
+    }
+
 
     copy() {
         return new Vector(this.x, this.y, this.z);

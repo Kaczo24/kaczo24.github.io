@@ -10,9 +10,9 @@ const orderOfUpdates = [Mover];
 let pos = new Vector();
 let zoom = 1;
 let mousePos = new Vector();
-let isDraged = false, isPlacing = false, isDeleting = false;
-let cells = {}, postCells = {};
-let toPlace = "";
+let isDraged = false;
+let cells = {}, toUpdate = [];
+let toPlace = "", placeRotation = new Vector(1, 0);
 let framecount = 0;
 
 
@@ -20,8 +20,8 @@ gameloop.INIT(Setup, Update);
 gameloop.Start();
 function Setup() {
     window.onmousewheel = Scroll;
-
     canvas.onmousemove = TrackPos;
+    keyDownFunction[settings.keybinds.rotate] = () => placeRotation = placeRotation.rotate(Math.PI / 2);
 
     if(settings.darkmode) {
         document.body.bgColor = "#3f3f47";
@@ -31,21 +31,29 @@ function Setup() {
 
 
 function Update() {
-    
+    isDraged = false;
+    if(keyPressed[settings.keybinds.place]) {
+        if(toPlace == "")
+            isDraged = true;
+        else 
+            PlaceCell();
+    } 
+    if(keyPressed[settings.keybinds.delete]) {
+        let _pos = ScreenToWorldPos(mousePos).div(cellSize).integerateR();
+        DeleteCell(_pos);
+    }
+
+
     Move();
 
     if(framecount == 0) 
         CellUpdate()
 
-    if(isPlacing) 
-        PlaceCell();
+    constLog.innerText = 
+    `X: ${pos.x}; Y: ${pos.y}; Zoom: ${zoom}
+    mouseX: ${mousePos.x}, mouseY: ${mousePos.y}
+    placeX: ${ScreenToWorldPos(mousePos).div(cellSize).integerateR().x} placeY: ${ScreenToWorldPos(mousePos).div(cellSize).integerateR().y} rotationX: ${placeRotation.x} rotationY: ${placeRotation.y}`;
 
-    if(isDeleting) {
-        let _pos = ScreenToWorldPos(mousePos).div(cellSize).integerateR();
-        DeleteCell(_pos, cells);
-    }
-
-    constLog.innerText = `X: ${pos.x}; Y: ${pos.y}; Zoom: ${zoom}\nmouseX: ${mousePos.x}, mouseY: ${mousePos.y}`
     Draw();
 
 
@@ -67,26 +75,25 @@ function Move() {
 }
 
 function CellUpdate() {
-    let toUpdate = [];
     for(let type of orderOfUpdates)
         for(let cs in cells) 
             for(let c in cells[cs]) 
                 if(cells[cs][c] instanceof type)
                     toUpdate.push(cells[cs][c]);
 
-    for(let c of toUpdate)
-        c.Update();
-    
-    for(let cs in postCells) 
-        for(let c in postCells[cs]) 
-            SetCell(postCells[cs][c].pos, postCells[cs][c], cells);
-
-    postCells = {};
+    while (toUpdate.length > 0) {
+        toUpdate[0].Update();
+        toUpdate.splice(0, 1);
+    }
 }
 
 function PlaceCell() {
     let _pos = ScreenToWorldPos(mousePos).div(cellSize).integerateR();
-    SetCell(_pos, new Wall(), cells);
+    switch(toPlace) {
+        case "wall": SetCell(_pos, new Wall()); break;
+        case "box": SetCell(_pos, new Box()); break;
+        case "mover": SetCell(_pos, new Mover(placeRotation.copy())); break;
+    }
 }
 
 function Draw() {
@@ -153,30 +160,6 @@ function Scroll(e) {
     zoom /= 5; 
 }
 
-function OnClickS(e)
-{
-    if(e.button == settings.keybinds.place) {
-        isPlacing = false;
-        isDraged = false;
-        if(toPlace == "")
-            isDraged = true;
-        else 
-            isPlacing = true;
-    } 
-    if(e.button == settings.keybinds.delete) 
-        isDeleting = true;
-}
-
-function OnClickE(e)
-{
-    if(e.button == settings.keybinds.place) {
-        isDraged = false;
-        isPlacing = false;
-    } 
-    if(e.button == settings.keybinds.delete) 
-        isDeleting = false;
-}
-
 function WorldToScreenPos(_pos) {
     let newX = center.x + _pos.x - pos.x;
     let newY = center.y - _pos.y + pos.y;
@@ -192,34 +175,24 @@ function ScreenToWorldPos(_pos) {
 
 
 function GetCell(_pos) {
-    if(!cells[_pos.x]) {
-        if(!postCells[_pos.x])
-            return undefined;
-        if(!postCells[_pos.x][_pos.y])
-            return undefined;
-        return postCells[_pos.x][_pos.y];
-    }
-    if(!cells[_pos.x][_pos.y]) {
-        if(!postCells[_pos.x])
-            return undefined;
-        if(!postCells[_pos.x][_pos.y])
-            return undefined;
-        return postCells[_pos.x][_pos.y];
-    }
+    if(!cells[_pos.x])
+        return undefined;
+    if(!cells[_pos.x][_pos.y]) 
+        return undefined;
     return cells[_pos.x][_pos.y];
 }
 
-function SetCell(_pos, s, grid) {
+function SetCell(_pos, s) {
     s.pos = _pos.copy();
-    if(!grid[_pos.x]){
-        grid[_pos.x] = {};
-        grid[_pos.x][_pos.y] = s;
-    } else if(!grid[_pos.x][_pos.y]) 
-        grid[_pos.x][_pos.y] = s; 
+    if(!cells[_pos.x]){
+        cells[_pos.x] = {};
+        cells[_pos.x][_pos.y] = s;
+    } else if(!cells[_pos.x][_pos.y]) 
+    cells[_pos.x][_pos.y] = s; 
 }
 
-function DeleteCell(_pos, grid) {
+function DeleteCell(_pos) {
     try {
-        delete grid[_pos.x][_pos.y];
+        delete cells[_pos.x][_pos.y];
     } catch (error) {}      
 }

@@ -5,7 +5,7 @@ class Cell {
         return  WorldToScreenPos(this.pos.mult(cellSize)).sub(new Vector(cellSize*zoom/2, cellSize*zoom/2));
     }
 
-    Draw(){}
+    Draw() {}
     Update() {}
 
     copy() {
@@ -46,7 +46,7 @@ class Mover extends Cell {
 
     Update() {
         if(CheckMovement(this.pos, this.dir, 0)) 
-            MoveCell(this.pos, this.dir, true)
+            MoveCell(this.pos, this.dir);
     }
 
     Draw() {
@@ -88,12 +88,15 @@ function CheckMovement(_pos, dir, index) {
     return CheckMovement(_pos.add(dir), dir, index + 1);
 }
 
-function MoveCell(_pos, dir, actor) {
+function MoveCell(_pos, dir, forceUpdate) {
     if(GetCell(_pos.add(dir)))
-        MoveCell(_pos.add(dir), dir, false);
-    if(actor)
-        SetCell(_pos.add(dir), GetCell(_pos), postCells);
-    else
-        SetCell(_pos.add(dir), GetCell(_pos), cells);
-    DeleteCell(_pos, cells);
+        MoveCell(_pos.add(dir), dir, true);
+    if(forceUpdate && toUpdate.includes(GetCell(_pos))) {
+        GetCell(_pos).Update();
+        toUpdate.splice(toUpdate.indexOf(GetCell(_pos)), 1);
+    }
+    if(GetCell(_pos)) {
+        SetCell(_pos.add(dir), GetCell(_pos));
+        DeleteCell(_pos);
+    }
 }
