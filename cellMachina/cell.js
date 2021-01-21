@@ -8,11 +8,11 @@ class Cell {
     Draw() {}
     Update() {}
 
-    copy() {
-        let c = new this.constructor();
-        c.pos = this.pos.copy();
-        return c;
-    }
+    //copy() {
+    //    let c = new this.constructor();
+    //    c.pos = this.pos.copy();
+    //    return c;
+    //}
 }
 
 class Wall extends Cell {
@@ -46,7 +46,8 @@ class Mover extends Cell {
 
     Update() {
         if(CheckMovement(this.pos, this.dir, 0)) 
-            MoveCell(this.pos, this.dir);
+        MoveCell(this.pos, this.dir);
+        toUpdate.splice(toUpdate.indexOf(this), 1);
     }
 
     Draw() {
@@ -70,11 +71,14 @@ class Mover extends Cell {
 
     }
 
-    copy() {
-        let c = new this.constructor(this.dir.copy());
-        c.pos = this.pos.copy();
-        return c;
-    }
+    //copy() {
+    //    let c = new this.constructor(this.dir.copy());
+    //    c.pos = this.pos.copy();
+    //    return c;
+    //}
+    toString() {
+        return "Mover" + this.pos.x;
+    } 
 }
 
 function CheckMovement(_pos, dir, index) {
@@ -91,10 +95,10 @@ function CheckMovement(_pos, dir, index) {
 function MoveCell(_pos, dir, forceUpdate) {
     if(GetCell(_pos.add(dir)))
         MoveCell(_pos.add(dir), dir, true);
-    if(forceUpdate && toUpdate.includes(GetCell(_pos))) {
+
+    if(forceUpdate && toUpdate.includes(GetCell(_pos)))
         GetCell(_pos).Update();
-        toUpdate.splice(toUpdate.indexOf(GetCell(_pos)), 1);
-    }
+        
     if(GetCell(_pos)) {
         SetCell(_pos.add(dir), GetCell(_pos));
         DeleteCell(_pos);

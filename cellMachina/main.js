@@ -46,8 +46,8 @@ function Update() {
 
     Move();
 
-    if(framecount == 0) 
-        CellUpdate()
+    //if(framecount == 0) 
+    //    CellUpdate()
 
     constLog.innerText = 
     `X: ${pos.x}; Y: ${pos.y}; Zoom: ${zoom}
@@ -80,10 +80,12 @@ function CellUpdate() {
             for(let c in cells[cs]) 
                 if(cells[cs][c] instanceof type)
                     toUpdate.push(cells[cs][c]);
-
+    
+    //console.log(toUpdate+"");
     while (toUpdate.length > 0) {
         toUpdate[0].Update();
-        toUpdate.splice(0, 1);
+        //toUpdate.splice(0, 1);
+        //console.log(toUpdate+"");
     }
 }
 
