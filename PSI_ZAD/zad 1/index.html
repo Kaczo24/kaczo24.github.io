@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            table * {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <button onclick="GetData()">Get Data</button>
+        <br><br><br><br>
+        <table>
+            <tr>
+                <td><button onclick="Open()">Otwórz</button></td>
+                <td></td>
+                <td><button onclick="Close()">Zamknij</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button onclick="Up()">Góra</button></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><button onclick="Left()">Lewo</button></td>
+                <td><button onclick="Center()">Środek</button></td>
+                <td><button onclick="Right()">Prawo</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button onclick="Down()">Dół</button></td>
+                <td></td>
+            </tr>
+        </table>
+        <p id=cout></p>
+        <script src="main.js"></script>
+    </body>
+</html>
