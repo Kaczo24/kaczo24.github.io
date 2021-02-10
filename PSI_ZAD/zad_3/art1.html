@@ -6,8 +6,25 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
+		<div id="panel" onmouseenter="event.currentTarget.style.left = '0'" onmouseleave="event.currentTarget.style.left = '-260px'">
+            <label>Tło nagłówka:</label>
+            <input type="color" value="#5A5A5A" onchange="ChangeBgColorHead(event)"   id=BgColorHead><br>
+            <label>Kolor nagłówka:</label>
+            <input type="color" value="#c4c4cb" onchange="ChangeFontColorHead(event)" id=FontColorHead><br>
+
+            <label>Tło tekstu:</label>
+            <input type="color" value="#ffffff" onchange="ChangeBgColorText(event)"   id=BgColorText><br>
+            <label>Kolor tekstu:</label>
+            <input type="color" value="#000000" onchange="ChangeFontColorText(event)" id=FontColorText><br>
+            <label>Rozmiar tekstu:</label>
+            <input type="range" min="50" value="100" max="200" onChange="ChangeFontSize(event);" id=FontSize><br>
+
+            <label>Czcionka:</label>
+            <select id="FontFamily" onChange="ChangeFontFamily(event);">
+            </select><br>
+        </div>
 		<div id="PAGE">
-			<div class="hed">
+			<div class="hed HEADER">
 				<div class="name">
 					<h1>Szachy</h1>
 					<h3>w końcu to też sport</h3>
@@ -20,21 +37,24 @@
 					<a target="_top" href="index.html">Contact</a>
 				</div>
 			</div>
-			<img class="Imain" src="ai.jpg"/>
-			<div class="art2">
-				<h2>Deep Blue</h2>
-				<h5>Wiki Pedia</h5>
-				<p><b>Deep Blue was a chess-playing computer developed by IBM. It is known for being the first computer chess-playing system to win both a chess game and a chess match against a reigning world champion under regular time controls.</b></p>
-				<p>Deep Blue won its first game against a world champion on 10 February 1996, when it defeated Garry Kasparov in game one of a six-game match. However, Kasparov won three and drew two of the following five games, defeating Deep Blue by a score of 4–2. Deep Blue was then heavily upgraded, and played Kasparov again in May 1997.[1] Deep Blue won game six, thereby winning the six-game rematch 3½–2½ and becoming the first computer system to defeat a reigning world champion in a match under standard chess tournament time controls.[2] Kasparov accused IBM of cheating[3] and demanded a rematch. IBM refused and dismantled Deep Blue.</p>
-				<p>Development for Deep Blue began in 1985 with the ChipTest project at Carnegie Mellon University. This project eventually evolved into Deep Thought, at which point the development team was hired by IBM.[4] Grandmaster Joel Benjamin was part of this development team.[5] The project evolved once more with the new name Deep Blue in 1989.</p>
-				<p>Deep Blue and Kasparov played each other on two occasions. The first match began on 10 February 1996, in which Deep Blue became the first machine to win a chess game against a reigning world champion (Garry Kasparov) under regular time controls. However, Kasparov won three and drew two of the following five games, beating Deep Blue by a score of 4–2 (wins count 1 point, draws count ½ point). The match concluded on 17 February 1996.</p>
-				<p>Deep Blue was then heavily upgraded (unofficially nicknamed "Deeper Blue")[16] and played Kasparov again in May 1997, winning the six-game rematch 3½–2½, ending on 11 May. Deep Blue won the deciding game six after Kasparov made a mistake in the opening, becoming the first computer system to defeat a reigning world champion in a match under standard chess tournament time controls.</p>
+			<div id=TEXT>
+				<img class="Imain" src="ai.jpg"/>
+				<div class="art2">
+					<h2>Deep Blue</h2>
+					<h5>Wiki Pedia</h5>
+					<p><b>Deep Blue was a chess-playing computer developed by IBM. It is known for being the first computer chess-playing system to win both a chess game and a chess match against a reigning world champion under regular time controls.</b></p>
+					<p>Deep Blue won its first game against a world champion on 10 February 1996, when it defeated Garry Kasparov in game one of a six-game match. However, Kasparov won three and drew two of the following five games, defeating Deep Blue by a score of 4–2. Deep Blue was then heavily upgraded, and played Kasparov again in May 1997.[1] Deep Blue won game six, thereby winning the six-game rematch 3½–2½ and becoming the first computer system to defeat a reigning world champion in a match under standard chess tournament time controls.[2] Kasparov accused IBM of cheating[3] and demanded a rematch. IBM refused and dismantled Deep Blue.</p>
+					<p>Development for Deep Blue began in 1985 with the ChipTest project at Carnegie Mellon University. This project eventually evolved into Deep Thought, at which point the development team was hired by IBM.[4] Grandmaster Joel Benjamin was part of this development team.[5] The project evolved once more with the new name Deep Blue in 1989.</p>
+					<p>Deep Blue and Kasparov played each other on two occasions. The first match began on 10 February 1996, in which Deep Blue became the first machine to win a chess game against a reigning world champion (Garry Kasparov) under regular time controls. However, Kasparov won three and drew two of the following five games, beating Deep Blue by a score of 4–2 (wins count 1 point, draws count ½ point). The match concluded on 17 February 1996.</p>
+					<p>Deep Blue was then heavily upgraded (unofficially nicknamed "Deeper Blue")[16] and played Kasparov again in May 1997, winning the six-game rematch 3½–2½, ending on 11 May. Deep Blue won the deciding game six after Kasparov made a mistake in the opening, becoming the first computer system to defeat a reigning world champion in a match under standard chess tournament time controls.</p>
 				</div>
-			<div class="end">
+			</div>
+			<div class="end HEADER">
 				<div class="b1">Copyright by Mi 2020</div>
 				<div class="b2">Template by: Mateusz Kaczkowski</div>
 			</div>
 		</div>
+		<script src="main.js"></script>
 	</body>
 </html>
 
