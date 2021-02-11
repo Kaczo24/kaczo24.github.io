@@ -1,0 +1,108 @@
+<!doctype HTML>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="Mateusz Kaczkowski">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+        <form action="https://youtu.be/dQw4w9WgXcQ" onsubmit="return Validate(this);">
+            <label class="_Req">*Imie:</label>
+            <input class="Req" type="text" name="firstname"><br>
+
+            <label class="_Req">*Nazwisko:</label>
+            <input class="Req" type="text" name="lastname"><br>
+
+            <label class="_Req">*Telefon:</label>
+            <input class="Req" type="text" name="phonenumber"><br><br>
+
+
+            <label>Województwo:</label>
+            <select name="region">
+                <option value="Dolnośląskie"        >Dolnośląskie</option>
+                <option value="Kujawsko-Pomorskie"  >Kujawsko-Pomorskie</option>
+                <option value="Lubelskie"           >Lubelskie</option>
+                <option value="Lubuskie"            >Lubuskie</option>
+                <option value="Łódzkie"             >Łódzkie</option>
+                <option value="Małopolskie"         >Małopolskie</option>
+                <option value="Mazowieckie"         >Mazowieckie</option>
+                <option value="Opolskie"            >Opolskie</option>
+                <option value="Podkarpackie"        >Podkarpackie</option>
+                <option value="Podlaskie"           >Podlaskie</option>
+                <option value="Pomorskie"           >Pomorskie</option>
+                <option value="Śląskie"             >Śląskie</option>
+                <option value="Świętokrzyskie"      >Świętokrzyskie</option>
+                <option value="Warmińsko-Mazurskie" >Warmińsko-Mazurskie</option>
+                <option value="Wielkopolskie"       >Wielkopolskie</option>
+                <option value="Zachodniopomorskie"  >Zachodniopomorskie</option>
+            </select><br>
+
+            <label>Miejscowość:</label>
+            <input type="text" name="town"><br>
+
+            <label>Ulica:</label>
+            <input type="text" name="street"><br><br>
+
+
+            <label>Treść zapytania:</label>
+            <textarea name="question" onkeyup="LngAct()" maxlength=500></textarea><br>
+            <p id=charLength></p><br>
+
+
+            <label style="height: 36px;">Typ fundamentu:</label>
+            <input type="radio" name="foundationType" value="regular" onchange="SetType(event)" checked>Regularna<br>
+            <input type="radio" name="foundationType" value="complex" onchange="SetType(event)">Złożona<br>
+            
+            <div id=WH>
+                <label>Szerokość:</label>
+                <input type="number" name="width" step=any value="0" onchange="AreaAct()"> metrów<br>
+
+                <label>Wysokość:</label>
+                <input type="number" name="height" step=any value="0" onchange="AreaAct()"> metrów<br>
+            </div>
+
+            <label>Pole działki: </label>
+            <input type="number" name="area" step=any value="0" disabled> metrów kwadratowych<br><br>
+
+
+            <label>Projekt zastępczy</label>
+            <input type="checkbox" name="holes"><br>
+
+            <label>Dodatkowe odwodnienie</label>
+            <input type="checkbox" name="holes"><br>
+
+            <label>Dodatkowe ocieplenie</label>
+            <input type="checkbox" name="holes"><br><br>
+
+
+            <label>Działka pochylona</label>
+            <input type="checkbox" name="angled" onchange="ShowAngle(event);"><br>
+
+            <div id=angle style="display: none;">
+                <label>Kąt nachylenia:</label>
+                <input type="number" name="angle" min=0 max=360 disabled> stopni<br><br>
+            </div>
+
+            <label>Odwierty geologiczne</label>
+            <input type="checkbox" name="holes" onchange="ShowHoles(event);"><br>
+
+            <div id=holes style="display: none;">
+                <label>Liczba odwiertów:</label>
+                <input type="number" name="holesNumber" min=3 max=10 disabled><br><br>
+            </div>
+
+            <label>Szkody górnicze</label>
+            <input type="checkbox" name="holes" onchange="ShowDamage(event);"><br>
+
+            <div id=miningDamage style="display: none;">
+                <label>Liczba odwiertów:</label>
+                <textarea name="miningDamage" disabled></textarea><br><br>
+            </div>
+
+            <br>
+            <input type="submit" value="Wyślij">
+            <p id=errorOut></p>
+        </form>
+        <script src="main.js"></script>
+    </body>
+</html>
