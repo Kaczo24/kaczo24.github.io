@@ -27,9 +27,16 @@ function Setup() {
         let sel = document.createElement("select");
         sel.setAttribute("id", test);
         sel.setAttribute("onchange", "UpdateValue(event);");
+
+        let opt = document.createElement("option");
+        opt.setAttribute("value", "unset");
+        opt.innerText = "unset";
+        sel.appendChild(opt);
+
         for(let val of template[test]) {
-            let opt = document.createElement("option");
-            opt.setAttribute();
+            opt = document.createElement("option");
+            opt.setAttribute("value", val);
+            opt.innerText = val;
             sel.appendChild(opt);
         }
         inputs.appendChild(sel);
