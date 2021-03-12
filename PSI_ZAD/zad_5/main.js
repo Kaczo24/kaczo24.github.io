@@ -21,10 +21,12 @@ function Setup() {
                 if(!template[test].includes(val))
                     template[test].push(val);
         }
-    
+    let sel
     for(let test in template) {
+        (sel = document.createElement("label")).innerText = test
+        inputs.appendChild(sel);
         template[test].sort();
-        let sel = document.createElement("select");
+        sel = document.createElement("select");
         sel.setAttribute("id", test);
         sel.setAttribute("onchange", "UpdateValue(event);");
 
@@ -40,6 +42,7 @@ function Setup() {
             sel.appendChild(opt);
         }
         inputs.appendChild(sel);
+        inputs.appendChild(document.createElement("br"));
     }
 
 
@@ -60,18 +63,22 @@ function UpdateAnswers() {
     let current = [];
     for(let name in all) {
         let B = true;
-        for(let test in all[name]) 
+        let v = 0;
+        for(let test in all[name]) {
             if(!all[name][test].includes(settings[test])) {
                 B = false;
                 break;
             }
+            v += (all[name][test].length - all[name][test].indexOf(settings[test])) / all[name][test].length;
+        }
         if(B)
-            current.push(name);
+            current.push([name, v]);
     }
     images.innerHTML = "";
+    current.sort((a, b) => b[1] - a[1]);
     for(let name of current) {
         let img = document.createElement("img");
-        img.setAttribute("src", `images/${name}.jpg`);
+        img.setAttribute("src", `images/${name[0]}.jpg`);
         images.appendChild(img);
     }
 }

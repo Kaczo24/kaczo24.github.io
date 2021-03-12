@@ -11,6 +11,15 @@ let all = {
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "dużo"
+        ],
+        "stiffness": [
+            "twarde"
         ]
     },
     "banana": {
@@ -23,6 +32,15 @@ let all = {
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "niezauważalne/brak"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
     "blueberry": {
@@ -35,6 +53,15 @@ let all = {
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "niezauważalne/brak"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
     "carrot": {
@@ -47,18 +74,38 @@ let all = {
         ],
         "type": [
             "warzywo"
+        ],
+        "skin": [
+            "szorstka"
+        ],
+        "seeds": [
+            "niezauważalne/brak"
+        ],
+        "stiffness": [
+            "twarde"
         ]
     },
     "corn": {
         "color": [
-            "żółty",
-            "zielony"
+            "żółty"
         ],
         "shape": [
-            "podłużny"
+            "podłużny",
+            "nieregularny"
         ],
         "type": [
             "warzywo"
+        ],
+        "skin": [
+            "gładka",
+            "szorstka"
+        ],
+        "seeds": [
+            "dużo",
+            "niezauważalne/brak"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
     "cucumber": {
@@ -70,6 +117,16 @@ let all = {
         ],
         "type": [
             "warzywo"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "dużo",
+            "niezauważalne/brak"
+        ],
+        "stiffness": [
+            "twarde"
         ]
     },
     "eggplant": {
@@ -81,19 +138,38 @@ let all = {
         ],
         "type": [
             "warzywo"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "dużo",
+            "niezauważalne/brak"
+        ],
+        "stiffness": [
+            "twarde"
         ]
     },
     "kiwi": {
         "color": [
-            "zielony",
-            "brązowy"
+            "brązowy",
+            "zielony"
         ],
         "shape": [
-            "kulisty",
-            "owalny"
+            "owalny",
+            "kulisty"
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "włoskowata"
+        ],
+        "seeds": [
+            "dużo"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
     "peach": {
@@ -107,6 +183,15 @@ let all = {
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "włoskowata"
+        ],
+        "seeds": [
+            "jedno"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
     "pear": {
@@ -115,11 +200,20 @@ let all = {
             "zielony"
         ],
         "shape": [
-            "podłużny",
+            "nieregularny",
             "owalny"
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "dużo"
+        ],
+        "stiffness": [
+            "twarde"
         ]
     },
     "pepper": {
@@ -129,35 +223,63 @@ let all = {
             "zielony"
         ],
         "shape": [
-            "podłużny",
-            "owalny"
+            "nieregularny"
         ],
         "type": [
             "warzywo"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "dużo"
+        ],
+        "stiffness": [
+            "twarde"
         ]
     },
     "plum": {
         "color": [
-            "purpurowy"
+            "purpurowy",
+            "granatowy"
         ],
         "shape": [
-            "kulisty",
-            "owalny"
+            "owalny",
+            "kulisty"
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "jedno"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
     "potato": {
         "color": [
-            "żółty",
-            "brązowy"
+            "brązowy",
+            "żółty"
         ],
         "shape": [
-            "podłużny"
+            "owalny"
         ],
         "type": [
             "warzywo"
+        ],
+        "skin": [
+            "gładka",
+            "szorstka"
+        ],
+        "seeds": [
+            "niezauważalne/brak"
+        ],
+        "stiffness": [
+            "twarde"
         ]
     },
     "strawberry": {
@@ -165,11 +287,21 @@ let all = {
             "czerwony"
         ],
         "shape": [
-            "kulisty",
+            "nieregularny",
             "owalny"
         ],
         "type": [
             "owoc"
+        ],
+        "skin": [
+            "szorstka"
+        ],
+        "seeds": [
+            "na zewnątrz",
+            "dużo"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
     "tomato": {
@@ -177,10 +309,20 @@ let all = {
             "czerwony"
         ],
         "shape": [
-            "owalny"
+            "kulisty"
         ],
         "type": [
-            "owoc"
+            "owoc",
+            "warzywo"
+        ],
+        "skin": [
+            "gładka"
+        ],
+        "seeds": [
+            "dużo"
+        ],
+        "stiffness": [
+            "miękkie"
         ]
     },
 };

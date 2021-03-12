@@ -3,18 +3,19 @@ let canvas = document.getElementById("canvas");
 let cx = canvas.getContext("2d");
 let constLog = document.getElementById("constLog");
 
-const width = canvas.width, height = canvas.height, center = new Vector(width/2, height/2);
+let width = canvas.width = window.innerWidth * 0.98, height = canvas.height = window.innerHeight * 0.98, center = new Vector(width/2, height/2);
 const cellSize = 50;
 const orderOfUpdates = [Mover];
 
 let pos = new Vector();
 let zoom = 1;
 let mousePos = new Vector();
-let isDraged = false;
+let isDraged = false, isOnBar = false;
 let cells = {}, toUpdate = [];
 let toPlace = "", placeRotation = new Vector(1, 0);
 let framecount = 0;
 
+let barsize = 0.08;
 
 gameloop.INIT(Setup, Update);
 gameloop.Start();
@@ -31,14 +32,18 @@ function Setup() {
 
 
 function Update() {
+    center.x = (width = canvas.width = window.innerWidth * 0.98) / 2;
+    center.y = (height = canvas.height = window.innerHeight * 0.8) / 2;
     isDraged = false;
-    if(keyPressed[settings.keybinds.place]) {
+    isOnBar = mousePos.x < width * barsize;
+
+    if(keyPressed[settings.keybinds.place] && !isOnBar) {
         if(toPlace == "")
             isDraged = true;
         else 
             PlaceCell();
     } 
-    if(keyPressed[settings.keybinds.delete]) {
+    if(keyPressed[settings.keybinds.delete] && !isOnBar) {
         let _pos = ScreenToWorldPos(mousePos).div(cellSize).integerateR();
         DeleteCell(_pos);
     }
@@ -81,12 +86,7 @@ function CellUpdate() {
                 if(cells[cs][c] instanceof type)
                     toUpdate.push(cells[cs][c]);
     
-    //console.log(toUpdate+"");
-    while (toUpdate.length > 0) {
-        toUpdate[0].Update();
-        //toUpdate.splice(0, 1);
-        //console.log(toUpdate+"");
-    }
+    while (toUpdate.length > 0) toUpdate[0].Update();
 }
 
 function PlaceCell() {
@@ -133,6 +133,8 @@ function Draw() {
         }
     }
 
+    cx.fillStyle = "rgba(130, 130, 130, 0.65)";
+    cx.fillRect(0, 0, width * barsize, height);
 
     cx.fillStyle = "red";
     cx.circleFill(WorldToScreenPos(new Vector()), 5 * zoom);
@@ -149,17 +151,21 @@ function TrackPos(e) {
 }
 
 function Scroll(e) {
-    let nPM = ScreenToWorldPos(mousePos);
-    zoom *= 5;
-    if(e.wheelDeltaY > 0 && zoom < 10) {
-        pos = pos.sub(nPM).mult(zoom / (zoom + 1)).add(nPM);
-        zoom++;
+    if(isOnBar) {  
+        
+    } else {
+        let nPM = ScreenToWorldPos(mousePos);
+        zoom *= 5;
+        if(e.wheelDeltaY > 0 && zoom < 15) {
+            pos = pos.sub(nPM).mult(zoom / (zoom + 1)).add(nPM);
+            zoom++;
+        }
+        if(e.wheelDeltaY < 0 && zoom > 1) {
+            pos = pos.sub(nPM).mult(zoom / (zoom - 1)).add(nPM);
+            zoom--;
+        }
+        zoom /= 5; 
     }
-    if(e.wheelDeltaY < 0 && zoom > 1) {
-        pos = pos.sub(nPM).mult(zoom / (zoom - 1)).add(nPM);
-        zoom--;
-    }
-    zoom /= 5; 
 }
 
 function WorldToScreenPos(_pos) {

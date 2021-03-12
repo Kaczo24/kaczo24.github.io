@@ -1,3 +1,14 @@
 img {
     width: 300px;
 }
+
+label {
+    width: 100px;
+    display: block;
+    float: left;
+}
+
+label, select {
+
+    margin-bottom: 10px;
+}
