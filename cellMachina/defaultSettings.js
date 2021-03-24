@@ -8,9 +8,11 @@ const settings = {
 
         "speedBoost": "shift",
 
-        "place": 0,
-        "pick": 1,
-        "delete": 2
+        "place": "mouse0",
+        "pick": "mouse1",
+        "delete": "mouse2",
+
+        "pause": " "
     },
     "darkmode": true
 }

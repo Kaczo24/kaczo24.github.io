@@ -1,33 +1,26 @@
 class Node {
-  constructor(x, y, upper) {
-    if(x instanceof Vector) {
-      this.pos = x;
-      this.vel = new Vector();
-      if(y) {
-        this.upper = y;
-        this.upper.lower = this;
-      } else this.fixed = true;
-      return;
-    }
-    this.pos = new Vector(x, y);
+  constructor(a, upper) {
     this.vel = new Vector();
+    this.angle = a;
+    this.avel = 0;
     if(upper) {
       this.upper = upper;
       this.upper.lower = this;
+      this.pos = this.upper.pos.add(new Vector(0, distance).rotate(a));
     }
-    else
+    else {
       this.fixed = true;
+      this.pos = new Vector(width/2, 100);
     }
+  }
 
   addForce(force, op) {
-    if(this.fixed)
-      return;
-    if(!op)
-      op = {};
-    
+    if(this.fixed) return;
+    if(!op) op = {};
+
     this.vel = this.vel.add(force);
 
-    if(this.upper &&!op.up) {
+    if(this.upper && !op.up) {
       let dir = this.upper.pos.sub(this.pos).normalize();
       dir = dir.mult(this.vel.dot(dir));
 
@@ -42,24 +35,25 @@ class Node {
 
     if(this.lower && !op.low) {
       let dir = this.lower.pos.sub(this.pos).normalize();
-      dir = dir.mult(this.vel.dot(dir));
-      if(this.lower.fixed) {
-        this.vel = this.vel.sub(dir);
-      } else {
-        dir = dir.div(2);
-        this.vel = this.vel.sub(dir, {up:true});
-        this.lower.addForce(dir);
-      }
+      dir = dir.mult(this.vel.dot(dir)/2);
+
+      this.vel = this.vel.sub(dir, {up:true});
+      this.lower.addForce(dir);
     }
   }
 
   update() {
-    if(this.fixed)
-      return;
-    this.vel = this.vel.mult(1.0046);
-    this.pos = this.pos.add(this.vel);
-    
-    this.pos = this.upper.pos.add(this.pos.sub(this.upper.pos).normalize().mult(distance));
+    if(!this.fixed) {
+
+      this.avel += this.vel.dot(this.upper.pos.sub(this.pos).rotate(-Math.PI/2).normalize()) / distance;
+      this.angle += this.avel;
+
+      this.pos = this.upper.pos.add(new Vector(0, distance).rotate(this.angle));
+      this.vel = new Vector();
+    }
+    this.draw();
+    if(this.lower)
+      this.lower.update();
   }
 
   draw() {

@@ -79,10 +79,10 @@ function dLib_keydown(event) {
     keyPressed[event.key.toLowerCase()] = false;
  }
  function dLib_mousedown(event) {
-    keyPressed[event.button] = true;
+    keyPressed['mouse' + event.button] = true;
  }
  function dLib_mouseup(event) {
-    keyPressed[event.button] = false;
+    keyPressed['mouse' + event.button] = false;
  }
 
  
@@ -91,7 +91,9 @@ function dLib_keydown(event) {
  window.onmousedown = dLib_mousedown;
  window.onmouseup = dLib_mouseup;
 
+
 // utility classes --------------------------------------------------------------------------------------------------------------
+
 
 class Vector {
     x = 0
@@ -107,6 +109,10 @@ class Vector {
         
     }
 
+    get mag() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
     add(v) {
         return new Vector(this.x + v.x, this.y + v.y);
     }
@@ -118,6 +124,10 @@ class Vector {
     }
     div(a) {
         return new Vector(this.x / a, this.y / a);
+    }
+
+    dot(a) {
+        return this.x * a.x + this.y * a.y + this.z * a.z;
     }
 
     integerate() {
@@ -132,6 +142,9 @@ class Vector {
         return new Vector(this.x * Math.cos(a) - this.y * Math.sin(a), this.x * Math.sin(a) + this.y * Math.cos(a)).integerateR();
     }
 
+    normalize() {
+        return this.div(this.mag);
+    }
 
     copy() {
         return new Vector(this.x, this.y, this.z);
