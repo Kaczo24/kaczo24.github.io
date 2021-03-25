@@ -1,6 +1,8 @@
 class Cell {
     pos = new Vector()
     movable = false;
+    dir = new Vector(1, 0);
+    updated = false;
     getCorner() {
         return  WorldToScreenPos(this.pos.mult(cellSize)).sub(new Vector(cellSize*zoom/2, cellSize*zoom/2));
     }

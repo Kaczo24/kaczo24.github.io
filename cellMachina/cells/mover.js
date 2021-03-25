@@ -1,5 +1,4 @@
 class Mover extends Cell {
-    dir = new Vector(1, 0);
     constructor(dir) {
         super();
         this.dir = dir;
@@ -7,6 +6,8 @@ class Mover extends Cell {
     }
 
     Update() {
+        if(this.updated) return;
+        this.updated = true;
         MoveCell(this.pos, this.dir, false, 0);
         toUpdate.splice(toUpdate.indexOf(this), 1);
     }

@@ -67,8 +67,10 @@ function CellUpdate() {
     for(let type of orderOfUpdates)
         for(let cs in cells) 
             for(let c in cells[cs]) 
-                if(cells[cs][c] instanceof type)
+                if(cells[cs][c] instanceof type) {
+                    cells[cs][c].updated = false;
                     toUpdate.push(cells[cs][c]);
+                }
     while (toUpdate.length > 0) toUpdate[0].Update();
 }
 
