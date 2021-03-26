@@ -18,6 +18,8 @@ function PlaceCell() {
         case "box": SetCell(_pos, new Box()); break;
         case "mover": SetCell(_pos, new Mover(placeRotation.copy())); break;
         case "rotator": SetCell(_pos, new Rotator(placeRotation.copy())); break;
+        case "placer": SetCell(_pos, new Placer(placeRotation.copy())); break;
+        case "destructor": SetCell(_pos, new Destructor(placeRotation.copy())); break;
     }
 }
 

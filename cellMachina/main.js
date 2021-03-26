@@ -7,8 +7,9 @@ let width = canvas.width = window.innerWidth * 0.98, height = canvas.height = wi
 let barsize = 0.08;
 const cellSize = 50;
 
-const placables = ["wall", "box", "mover", "rotator"],
- orderOfUpdates = [Mover, Rotator];
+const updateDelay = 2/3;
+const placables = ["wall", "box", "mover", "rotator", "placer", "destructor"],
+ orderOfUpdates = [Mover, Rotator, Placer, Destructor];
 let isDraged = false, isOnBar = false, isPlaying = true;
 let cells = {}, toUpdate = [];
 let toPlace = "", placeRotation = new Vector(1, 0);
@@ -52,7 +53,7 @@ function Update() {
     if(framecount == 0 && isPlaying) 
         CellUpdate();
     if(isPlaying)
-        framecount = (framecount + 1) % Math.round(gameloop.framerate * 2 / 3);
+        framecount = (framecount + 1) % Math.round(gameloop.framerate * updateDelay);
     
     Move();
     Draw();
@@ -86,36 +87,19 @@ function Draw() {
     }
 
     let cellSizeZ = cellSize * zoom;
-
     let nCells = new Vector(Math.ceil(width / cellSizeZ ) + 2, Math.ceil(height / cellSizeZ) + 2);
     if(nCells.x % 2 == 1) nCells.x += 1;
     if(nCells.y % 2 == 1) nCells.y += 1;
 
-    for(let n = -1; n < nCells.x; n++) {
+    for(let n = -1; n < nCells.x; n++)
         for(let m = -1; m < nCells.y; m++) {
-            let tmp = WorldToScreenPos(
-                pos
+            let tmp = WorldToScreenPos(pos
                 .add(new Vector(n, m).mult(cellSize))
                 .sub(new Vector(pos.x % cellSize - cellSize/2, pos.y % cellSize - 3*cellSize/2))
-                .sub(nCells.mult(cellSize/2))
-            );
+                .sub(nCells.mult(cellSize/2)));
             cx.strokeRect(tmp.x, tmp.y, cellSizeZ, cellSizeZ);
         }
-    }
 
-    for(let cs in cells) {
-        for(let c in cells[cs]) {
-            cells[cs][c].Draw();
-        }
-    }
-
-    cx.fillStyle = "rgba(130, 130, 130, 0.65)";
-    cx.fillRect(0, 0, width * barsize, height);
-
-    cx.fillStyle = "red";
-    cx.circleFill(WorldToScreenPos(new Vector()), 5 * zoom);
-
-    
     if(!isOnBar && toPlace != "") {
         let _pos = ScreenToWorldPos(mousePos).div(cellSize).integerateR();
         if(!GetCell(_pos)) {
@@ -127,4 +111,13 @@ function Draw() {
             DeleteCell(_pos);
         }
     }
+
+    for(let cs in cells) {
+        for(let c in cells[cs]) {
+            cells[cs][c].Draw();
+        }
+    }
+
+    cx.fillStyle = "rgba(130, 130, 130, 0.65)";
+    cx.fillRect(0, 0, width * barsize, height);
 }
