@@ -3,7 +3,9 @@
 <head>
   <script src="https://unpkg.com/gojs@2.2.16/release/go.js"></script>
   <script src="main.js" defer></script>
+  <script src="data.js" defer></script>
   <link rel="stylesheet" href="style.css">
+  <title>Recipe Designer</title>
 </head>
 
 <body>
@@ -41,6 +43,8 @@
         <button onclick="layout()">Layout</button>
         <button onclick="setsUpdate()">Sets Update</button>
         Diagram Model saved in JSON format:
+        <button onclick="document.getElementById('mySavedModel').value = graph; document.getElementById('sets').value = sets; load(); setsUpdate();">GET FROM JSON</button>
+        <a href="https://github.dev/Kaczo24/kaczo24.github.io"><button>DEV</button></a>
         <button style="float: right;" onclick="document.querySelector('body > style').disabled = !document.querySelector('body > style').disabled">DARK/LIGHT MODE</button>
         <br>
         <textarea id="mySavedModel" style="width:49%;height:300px;float: left;"></textarea>
