@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://unpkg.com/gojs@2.2.16/release/go.js"></script>
+  <script src="main.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <style>body, textarea { background-color: #333; color: #eee; }</style>
+  <div id="allSampleContent" class="p-4 w-full">
+    <div id="sample">
+      <div style="height: 550px; resize: vertical; display: flex; overflow: auto;">
+        <div style="width: 100%; height: 100%; float: left; resize: horizontal;  overflow: auto; display: flex; justify-content: space-between">
+          <div id="myPaletteDiv" style="width: 100px; margin-right: 2px; border: 1px solid black; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); cursor: auto;">
+            <canvas tabindex="0" width="98" height="478" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 98px; height: 478px; cursor: auto;">This
+              text is displayed if your browser does not support the Canvas HTML element.</canvas>
+            <div style="position: absolute; overflow: auto; width: 98px; height: 478px; z-index: 1;">
+              <div style="position: absolute; width: 1px; height: 1px;"></div>
+            </div>
+          </div>
+          <div id="myDiagramDiv" style="flex-grow: 1; height: 97%; margin-right: 10px; border: 1px solid black; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0); cursor: auto;">
+            <canvas tabindex="0" width="952" height="461" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 952px; height: 461px; cursor: auto;">This
+              text is displayed if your browser does not support the Canvas HTML element.</canvas>
+            <div style="position: absolute; overflow: auto; width: 952px; height: 478px; z-index: 1;">
+              <div style="position: absolute; width: 1074.23px; height: 1px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="height: 100%; display: flex;">
+          <div style="width: 18px; height:100%; overflow:hidden; position: relative;">
+            <input id="eraSlider" type="range" orient="vertical" min="0" max="1" step="1" value="0" onchange="currentEra = this.value; setsUpdate()"/>
+          </div>
+          <textarea id="sets" style="height: 100%; width: 300px; resize: horizontal;"></textarea>
+          <table id="flowers" style="height: 100%; width: 200px; resize: horizontal;"></table>
+        </div>
+      </div>
+      <div>
+        <button id="SaveButton" onclick="save()">Save</button>
+        <button onclick="load()">Load</button>
+        <button onclick="layout()">Layout</button>
+        <button onclick="setsUpdate()">Sets Update</button>
+        Diagram Model saved in JSON format:
+        <button style="float: right;" onclick="document.querySelector('body > style').disabled = !document.querySelector('body > style').disabled">DARK/LIGHT MODE</button>
+        <br>
+        <textarea id="mySavedModel" style="width:49%;height:300px;float: left;"></textarea>
+        <textarea id="mySavedConnections" style="width:49%;height:300px;float: left;" readonly></textarea>
+      </div>
+    </div>
+</body>
+
+</html>

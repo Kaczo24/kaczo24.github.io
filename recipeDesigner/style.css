@@ -1,0 +1,27 @@
+#flowers {
+    font-weight: 900;
+    -webkit-text-stroke: 0.3px white;
+    font-size: 24px;
+}
+
+input[type=range][orient=vertical] {
+    writing-mode: bt-lr;
+    width: 600px;
+    position: relative;
+    top: -10px;
+    left: 6px;
+    transform-origin: left;
+    transform: rotateZ(90deg);
+}
+
+#flowers tr td:nth-child(1) {
+    color: red;
+}
+
+#flowers tr td:nth-child(2) {
+    color: green;
+}
+
+#flowers tr td:nth-child(3) {
+    color: blue;
+}
